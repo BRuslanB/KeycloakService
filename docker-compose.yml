@@ -1,0 +1,52 @@
+version: '3.9'
+services: 
+  keycloak:
+    image: 'quay.io/keycloak/keycloak:24.0.5'
+    container_name: 'keycloak-container'
+    environment: 
+      - KC_DB=postgres
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB_URL=jdbc:postgresql://keycloak-db:5432/postgres
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=qweqwe
+    command:
+      - start-dev
+      - --http-relative-path=/auth
+    ports:
+      - 8081:8080
+      - 8843:8843
+    depends_on:
+      - keycloak-db
+
+  keycloak-db:
+    image: 'postgres:alpine'
+    container_name: 'keycloak-db-container'
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qweqwe
+    ports:
+      - 2345:5432
+    volumes:
+      - ./db-keycloak-data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  app:
+    build:
+      context: .
+#    image: bruslanb/app-keycloak-service-image:1.0.1 # use image from docker hub
+    container_name: app-keycloak-service-container
+    user: '1001:1001' # specify the UID and GID of the user you want to run the container as
+    depends_on:
+      keycloak:
+        condition: service_started
+    environment:
+      - SERVER_PORT=8080
+      - KEYCLOAK_URL=http://keycloak:8081/auth
+    ports:
+      - '8000:8080'
