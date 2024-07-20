@@ -46,7 +46,7 @@ services:
       keycloak:
         condition: service_started
     environment:
-      - SERVER_PORT=8080
-      - KEYCLOAK_URL=http://keycloak:8081/auth
+      - SERVER_PORT=8000
+      - KEYCLOAK_URL=http://keycloak:8080/auth
     ports:
-      - '8000:8080'
+      - '8000:8000'
