@@ -15,7 +15,7 @@ keycloak:
   url: http://localhost:8081/auth
   realm: bitlab-realm
   client: bitlab-user-service-client
-  client-secret: O39VKb2wihj43menLD4VJ6SWIW3igRK3
+  client-secret: 0CAB6IkzWoK8LvhlE9f1xaILvaytIcEm
   username: bitlab_admin
   password: qweqwe
   grant-type: password

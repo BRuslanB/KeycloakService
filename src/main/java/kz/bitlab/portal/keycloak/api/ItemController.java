@@ -15,18 +15,18 @@ public class ItemController {
     @GetMapping(value = "/home")
     @PreAuthorize("isAuthenticated")
     public String homePage(){
-        return "This id home page " + UserUtils.getCurrentUserName();
+        return "This is home page " + UserUtils.getCurrentUserName();
     }
 
     @GetMapping(value = "/about")
     @PreAuthorize("hasRole('USER')")
     public String aboutPage(){
-        return "This id about page " + UserUtils.getCurrentUserFirstName() + " - " + UserUtils.getCurrentUserLastName();
+        return "This is about page " + UserUtils.getCurrentUserFirstName() + " - " + UserUtils.getCurrentUserLastName();
     }
 
     @GetMapping(value = "/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminPage(){
-        return "This id admin page " + UserUtils.getCurrentUserEmail();
+        return "This is admin page " + UserUtils.getCurrentUserEmail();
     }
 }
